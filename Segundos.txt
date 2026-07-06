@@ -1,0 +1,2 @@
+Edges: Tiempo de ejecucion: 0.0310015 segundos
+MTX: 0.0180048 segundos
