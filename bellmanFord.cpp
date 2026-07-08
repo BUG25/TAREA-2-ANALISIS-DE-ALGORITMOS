@@ -4,92 +4,10 @@
 #include <iomanip>
 #include <limits>
 #include <cmath>
+#include "Grafo.hpp"
+#include "bellmanFord.hpp"
 
 using namespace std;
-
-const double INF = numeric_limits<double>::infinity();
-
-class Grafo {
-public:
-    int n;
-    vector<vector<double>> matriz;
-    vector<tuple<int, int, double>> aristas;
-
-    Grafo(int vertices) {
-        n = vertices;
-        matriz.assign(n, vector<double>(n, INF));
-
-        for (int i = 0; i < n; i++)
-            matriz[i][i] = 0;
-    }
-
-    void agregarArista(int u, int v, double peso) {
-        matriz[u][v] = peso;
-        aristas.push_back(make_tuple(u, v, peso));
-    }
-};
-
-pair<vector<double>, bool> bellmanFord(const Grafo &grafo, int origen) {
-
-    vector<double> dist(grafo.n, INF);
-    dist[origen] = 0;
-
-    for (int i = 0; i < grafo.n - 1; i++) {
-
-        bool actualizado = false;
-
-        for (auto arista : grafo.aristas) {
-
-            int u, v;
-            double peso;
-
-            tie(u, v, peso) = arista;
-
-            if (dist[u] != INF && dist[u] + peso < dist[v]) {
-                dist[v] = dist[u] + peso;
-                actualizado = true;
-            }
-        }
-
-        if (!actualizado)
-            break;
-    }
-
-    bool cicloNegativo = false;
-
-    for (auto arista : grafo.aristas) {
-
-        int u, v;
-        double peso;
-
-        tie(u, v, peso) = arista;
-
-        if (dist[u] != INF && dist[u] + peso < dist[v]) {
-            cicloNegativo = true;
-            break;
-        }
-    }
-
-    return {dist, cicloNegativo};
-}
-
-pair<vector<vector<double>>, bool> algoritmoBase(const Grafo &grafo) {
-
-    vector<vector<double>> distancias;
-    bool cicloNegativo = false;
-
-    for (int i = 0; i < grafo.n; i++) {
-
-        auto resultado = bellmanFord(grafo, i);
-
-        distancias.push_back(resultado.first);
-
-        if (resultado.second)
-            cicloNegativo = true;
-    }
-
-    return {distancias, cicloNegativo};
-}
 
 void imprimirMatriz(const vector<vector<double>> &dist, const string &nombre) {
 
