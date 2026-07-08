@@ -11,9 +11,7 @@
 
 #include "Grafo.hpp"
 
-//-----------------------------------------------------
 // Lectura de archivos .edges
-//-----------------------------------------------------
 
 inline Grafo leerEdges(const std::string& nombreArchivo)
 {
@@ -56,9 +54,7 @@ inline Grafo leerEdges(const std::string& nombreArchivo)
     return g;
 }
 
-//-----------------------------------------------------
 // Lectura de archivos Matrix Market (.mtx)
-//-----------------------------------------------------
 
 inline Grafo leerMTX(const std::string& nombreArchivo)
 {
@@ -107,9 +103,8 @@ inline Grafo leerMTX(const std::string& nombreArchivo)
     return g;
 }
 
-//-----------------------------------------------------
 // Detecta automáticamente la extensión
-//-----------------------------------------------------
+
 
 inline Grafo leerGrafo(const std::string& nombreArchivo)
 {
@@ -126,6 +121,33 @@ inline Grafo leerGrafo(const std::string& nombreArchivo)
     }
 
     throw std::runtime_error("Formato no soportado.");
+}
+
+inline void guardarCSV(
+    const std::string& nombreArchivo,
+    const std::vector<std::vector<double>>& dist)
+{
+    std::ofstream salida(nombreArchivo);
+
+    salida << "Nodo1,Nodo2,DistanciaMinima\n";
+
+    int n = dist.size();
+
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            salida << i << ","
+                   << j << ",";
+
+            if(dist[i][j] == INF)
+                salida << "INF";
+            else
+                salida << dist[i][j];
+
+            salida << "\n";
+        }
+    }
 }
 
 #endif
