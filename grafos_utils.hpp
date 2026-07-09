@@ -44,24 +44,9 @@ public:
 
         return g;
     }
-    // 3. Árbol aleatorio
-    Grafo arbol(int n, int minPeso = 1, int maxPeso = 100)
-    {
-        Grafo g(n);
+   
 
-        uniform_int_distribution<int> padre;
-        uniform_int_distribution<int> peso(minPeso,maxPeso);
-
-        for(int i=1;i<n;i++)
-        {
-            padre = uniform_int_distribution<int>(0,i-1);
-            g.agregarArista(padre(rng),i,peso(rng));
-        }
-
-        return g;
-    }
-
-    // 4. Aleatorio con densidad
+    // 3. Aleatorio con densidad
     Grafo aleatorio(int n, double densidad, int minPeso = 1, int maxPeso = 100)
     {
         Grafo g(n);
@@ -112,24 +97,6 @@ public:
         return g;
     }
 
-    // 6. Grafo desconectado
-
-    Grafo desconectado(int n)
-    {
-        Grafo g(n);
-
-        uniform_int_distribution<int> peso(1,100);
-
-        int mitad = n/2;
-
-        for(int i=0;i<mitad-1;i++)
-            g.agregarArista(i,i+1,peso(rng));
-
-        for(int i=mitad;i<n-1;i++)
-            g.agregarArista(i,i+1,peso(rng));
-
-        return g;
-    }
 };
 
 #endif
